@@ -4,12 +4,12 @@ import { GenericInput } from '@/components/ui/input';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import {
-    SafeAreaView,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 
 export default function LoginScreen() {

@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
 
   description: {
     color: '#C7C7C7',
-    fontSize: 14,
+    fontSize: 12,
     marginTop: 8,
     fontFamily: 'AnekOdia-Regular',
   },

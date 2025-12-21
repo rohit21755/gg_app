@@ -53,7 +53,8 @@ const styles = StyleSheet.create({
     borderRadius: 999,
     padding: 4,
     height: 40,
-    marginBottom: 16,
+    // marginBottom: 16,
+    marginTop: 10,
     // alignSelf: 'flex-start',
   },
 
