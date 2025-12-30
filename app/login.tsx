@@ -11,16 +11,18 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { useAuth } from '../hooks/useAuth';
 
 export default function LoginScreen() {
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-
+  const { login } = useAuth();
   const handleLogin = async () => {
     // navigate to a hidden screen inside the tabs group so the tab bar remains visible
-    router.push('/(tabs)/details' as any);
+    login.mutate({ email, password });
+    // router.push('/(tabs)/details' as any);
     // if (!email || !password) {
     //   alert('Please fill in all fields');
     //   return;
@@ -54,7 +56,9 @@ export default function LoginScreen() {
   };
 
   const handleSignUp = () => {
-    router.push('/signup' as any);
+
+    login.mutate({ email, password });
+    // router.push('/signup' as any);
   };
 
   return (
