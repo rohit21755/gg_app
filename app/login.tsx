@@ -56,9 +56,7 @@ export default function LoginScreen() {
   };
 
   const handleSignUp = () => {
-
-    login.mutate({ email, password });
-    // router.push('/signup' as any);
+    router.push('/register' as any);
   };
 
   return (

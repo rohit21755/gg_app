@@ -7,19 +7,22 @@ export const walletApi = {
   // Get user wallet
   getWallet: async () => {
     const res = await api.get('/wallet');
-    return res.data;
+    // API returns { data: {...} } or just {...}
+    return res.data.data || res.data;
   },
 
   // Get wallet transactions
   getWalletTransactions: async (params?: QueryParams) => {
     const res = await api.get('/wallet/transactions', { params });
-    return res.data;
+    // API returns { data: [...] } or just [...]
+    return res.data.data || res.data;
   },
 
   // Transfer wallet funds
   transferWallet: async (data: TransferWalletRequest) => {
     const res = await api.post('/wallet/transfer', data);
-    return res.data;
+    // API returns { data: {...} } or just {...}
+    return res.data.data || res.data;
   },
 };
 

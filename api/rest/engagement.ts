@@ -11,91 +11,106 @@ export const engagementApi = {
   // Get active flash challenges
   getActiveFlashChallenges: async () => {
     const res = await api.get('/flash-challenges/active');
-    return res.data;
+    // API returns { data: [...] } or just [...]
+    return res.data.data || res.data;
   },
 
   // Participate in flash challenge
   participateFlashChallenge: async (id: number) => {
     const res = await api.post(`/flash-challenges/${id}/participate`);
-    return res.data;
+    // API returns { data: {...} } or just {...}
+    return res.data.data || res.data;
   },
 
   // Get active trivia
   getActiveTrivia: async () => {
     const res = await api.get('/trivia/active');
-    return res.data;
+    // API returns { data: {...} } or just {...}
+    return res.data.data || res.data;
   },
 
   // Start trivia
   startTrivia: async (id: number) => {
     const res = await api.post(`/trivia/${id}/start`);
-    return res.data;
+    // API returns { data: {...} } or just {...}
+    return res.data.data || res.data;
   },
 
   // Submit trivia answers
   submitTriviaAnswers: async (id: number, data: SubmitTriviaAnswersRequest) => {
     const res = await api.post(`/trivia/${id}/submit-answers`, data);
-    return res.data;
+    // API returns { data: {...} } or just {...}
+    return res.data.data || res.data;
   },
 
   // Get mystery boxes
   getMysteryBoxes: async () => {
     const res = await api.get('/mystery-boxes');
-    return res.data;
+    // API returns { data: [...] } or just [...]
+    return res.data.data || res.data;
   },
 
   // Open mystery box
   openMysteryBox: async (id: number) => {
     const res = await api.post(`/mystery-boxes/${id}/open`);
-    return res.data;
+    // API returns { data: {...} } or just {...}
+    return res.data.data || res.data;
   },
 
   // Redeem secret code
   redeemSecretCode: async (code: string) => {
     const res = await api.post(`/secret-codes/redeem/${code}`);
-    return res.data;
+    // API returns { data: {...} } or just {...}
+    return res.data.data || res.data;
   },
 
   // Get current weekly challenge
   getCurrentWeeklyChallenge: async () => {
     const res = await api.get('/weekly-challenge/current');
-    return res.data;
+    // API returns { data: {...} } or just {...}
+    return res.data.data || res.data;
   },
 
   // Submit weekly challenge
   submitWeeklyChallenge: async (data: SubmitWeeklyChallengeRequest) => {
     const res = await api.post('/weekly-challenge/submit', data);
-    return res.data;
+    // API returns { data: {...} } or just {...}
+    return res.data.data || res.data;
   },
 
   // Get weekly challenge submissions
   getWeeklyChallengeSubmissions: async () => {
     const res = await api.get('/weekly-challenge/submissions');
-    return res.data;
+    // API returns { data: [...] } or just [...]
+    return res.data.data || res.data;
   },
 
   // Vote for weekly challenge submission
   voteWeeklyChallenge: async (submissionId: number) => {
     const res = await api.post(`/weekly-challenge/vote/${submissionId}`);
-    return res.data;
+    // API returns { data: {...} } or just {...}
+    return res.data.data || res.data;
   },
 
   // Get active battles
   getActiveBattles: async () => {
     const res = await api.get('/battles/active');
-    return res.data;
+    // API returns { data: [...] } or just [...]
+    return res.data.data || res.data;
   },
 
   // Submit battle entry
   submitBattle: async (id: number, data: SubmitBattleRequest) => {
     const res = await api.post(`/battles/${id}/submit`, data);
-    return res.data;
+    // API returns { data: {...} } or just {...}
+    return res.data.data || res.data;
   },
 
   // Vote for battle submission
   voteBattle: async (id: number, submissionId: number) => {
     const res = await api.post(`/battles/${id}/vote/${submissionId}`);
-    return res.data;
+    // API returns { data: {...} } or just {...}
+    return res.data.data || res.data;
   },
 };
 

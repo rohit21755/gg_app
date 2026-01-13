@@ -6,31 +6,36 @@ export const notificationsApi = {
   // Get user notifications
   getNotifications: async () => {
     const res = await api.get('/notifications');
-    return res.data;
+    // API returns { data: [...] } or just [...]
+    return res.data.data || res.data;
   },
 
   // Get unread notification count
   getUnreadCount: async () => {
     const res = await api.get('/notifications/unread-count');
-    return res.data;
+    // API returns { data: {...} } or just {...}
+    return res.data.data || res.data;
   },
 
   // Mark notification as read
   markAsRead: async (id: number) => {
     const res = await api.put(`/notifications/${id}/read`);
-    return res.data;
+    // API returns { data: {...} } or just {...}
+    return res.data.data || res.data;
   },
 
   // Mark all notifications as read
   markAllAsRead: async () => {
     const res = await api.put('/notifications/read-all');
-    return res.data;
+    // API returns { data: {...} } or just {...}
+    return res.data.data || res.data;
   },
 
   // Delete notification
   deleteNotification: async (id: number) => {
     const res = await api.delete(`/notifications/${id}`);
-    return res.data;
+    // API returns { data: {...} } or just {...}
+    return res.data.data || res.data;
   },
 };
 

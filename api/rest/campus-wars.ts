@@ -6,25 +6,29 @@ export const campusWarsApi = {
   // Get active campus wars
   getActiveWars: async () => {
     const res = await api.get('/wars/active');
-    return res.data;
+    // API returns { data: [...] } or just [...]
+    return res.data.data || res.data;
   },
 
   // Get war by ID
   getWarById: async (id: number) => {
     const res = await api.get(`/wars/${id}`);
-    return res.data;
+    // API returns { data: {...} } or just {...}
+    return res.data.data || res.data;
   },
 
   // Get war participants
   getWarParticipants: async (id: number) => {
     const res = await api.get(`/wars/${id}/participants`);
-    return res.data;
+    // API returns { data: [...] } or just [...]
+    return res.data.data || res.data;
   },
 
   // Get war leaderboard
   getWarLeaderboard: async (id: number) => {
     const res = await api.get(`/wars/${id}/leaderboard`);
-    return res.data;
+    // API returns { data: [...] } or just [...]
+    return res.data.data || res.data;
   },
 };
 

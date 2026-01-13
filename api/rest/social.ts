@@ -7,37 +7,43 @@ export const socialApi = {
   // Get activity feed
   getFeed: async (params?: QueryParams) => {
     const res = await api.get('/feed', { params });
-    return res.data;
+    // API returns { data: [...] } or just [...]
+    return res.data.data || res.data;
   },
 
   // Create social post
   createPost: async (data: CreatePostRequest) => {
     const res = await api.post('/posts', data);
-    return res.data;
+    // API returns { data: {...} } or just {...}
+    return res.data.data || res.data;
   },
 
   // Like a post
   likePost: async (id: number) => {
     const res = await api.post(`/posts/${id}/like`);
-    return res.data;
+    // API returns { data: {...} } or just {...}
+    return res.data.data || res.data;
   },
 
   // Unlike a post
   unlikePost: async (id: number) => {
     const res = await api.post(`/posts/${id}/unlike`);
-    return res.data;
+    // API returns { data: {...} } or just {...}
+    return res.data.data || res.data;
   },
 
   // Comment on a post
   commentOnPost: async (id: number, data: CommentRequest) => {
     const res = await api.post(`/posts/${id}/comment`, data);
-    return res.data;
+    // API returns { data: {...} } or just {...}
+    return res.data.data || res.data;
   },
 
   // Get post comments
   getPostComments: async (id: number, params?: QueryParams) => {
     const res = await api.get(`/posts/${id}/comments`, { params });
-    return res.data;
+    // API returns { data: [...] } or just [...]
+    return res.data.data || res.data;
   },
 };
 

@@ -1,27 +1,54 @@
+import { useAvailableTasks } from '@/api/rest/tasks';
 import Profile from '@/components/home/profile';
 import TaskCard from '@/components/taskcard';
 import Dropdown from '@/components/ui/dropdown';
-import { GlobalStyle } from '@/assets/styles/GlobalStyle';
-import AppButton from '@/components/ui/button';
-import { Colors } from '@/constants/theme';
+import { useToast } from '@/hooks/useToast';
 import { router } from 'expo-router';
-import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { useAuthStore } from '@/store/authStore';
+import { useEffect, useState } from 'react';
+import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 export default function HomeScreen() {
-  const user = useAuthStore((state) => state.user);
-  const accessToken = useAuthStore((state) => state.accessToken);
+  const [filter, setFilter] = useState<'Ongoing' | 'Completed'>('Ongoing');
+  const { data, isLoading, error, refetch } = useAvailableTasks();
+  const { showError } = useToast();
 
-  // If user is not signed in, show landing page
-  if (!user || !accessToken) {
-    return <LandingPage />;
-  }
+  // Handle errors
+  useEffect(() => {
+    if (error) {
+      showError('Failed to load tasks. Please try again.');
+    }
+  }, [error, showError]);
 
-  // If user is signed in, show home screen
+  // Handle API response structure - API might return { data: [...] } or just [...]
+  // Ensure tasks is always an array
+  const tasks = Array.isArray(data?.data) 
+    ? data.data 
+    : Array.isArray(data) 
+    ? data 
+    : [];
+
+  // Filter tasks based on selection (you may need to adjust this based on actual task structure)
+  const filteredTasks = tasks.filter((task: any) => {
+    // If task doesn't have status field, show all tasks for "Ongoing"
+    if (!task.status && !task.task_status) {
+      return filter === 'Ongoing';
+    }
+    
+    const status = task.status || task.task_status || '';
+    if (filter === 'Ongoing') {
+      // Show tasks that are not completed
+      return status !== 'completed' && status !== 'approved' && status !== 'done';
+    } else {
+      // Show completed tasks
+      return status === 'completed' || status === 'approved' || status === 'done';
+    }
+  });
+
   return (
-    <>
     <ScrollView
-    style={{ flex: 1, padding: 16, marginTop: 48 }}>
+      style={{ flex: 1, padding: 16, marginTop: 48 }}
+      showsVerticalScrollIndicator={false}
+    >
       <Profile />
       <View style={{
         marginTop: 16,
@@ -31,112 +58,79 @@ export default function HomeScreen() {
           justifyContent: 'space-between',
           alignItems: 'center',
         }}>
-          <Dropdown list={['Ongoing', 'Completed']} selected="Ongoing" setSelected={(value) => console.log(value)} />
-            <Pressable>
-              <Text style={{fontSize: 12, textAlign: 'center', color: '#ffffff'}}>View All</Text>
-            </Pressable>
+          <Dropdown 
+            list={['Ongoing', 'Completed']} 
+            selected={filter} 
+            setSelected={(value) => setFilter(value as 'Ongoing' | 'Completed')} 
+          />
+          <Pressable>
+            <Text style={{fontSize: 12, textAlign: 'center', color: '#ffffff'}}>View All</Text>
+          </Pressable>
         </View>
-
       </View>
+      
       <View style={{
         marginTop: 16,
       }}>
-        <TaskCard title='Post on Instagram'   description='Post about the upcoming Grove Growth workshop on your Instagram Story and tag @grovegrowth' points={100} />
+        {isLoading ? (
+          <View style={styles.loadingContainer}>
+            <ActivityIndicator size="large" color="#4A90E2" />
+            <Text style={styles.loadingText}>Loading tasks...</Text>
+          </View>
+        ) : filteredTasks.length === 0 ? (
+          <View style={styles.emptyContainer}>
+            <Text style={styles.emptyText}>
+              No {filter.toLowerCase()} tasks available
+            </Text>
+          </View>
+        ) : (
+          filteredTasks.map((task: any) => (
+            <Pressable
+              key={task.id || task.task_id}
+              onPress={() => {
+                router.push({
+                  pathname: '/submit-task',
+                  params: { taskId: task.id || task.task_id },
+                } as any);
+              }}
+            >
+              <TaskCard
+                title={task.title || task.name || 'Untitled Task'}
+                description={task.description || task.instructions || 'No description available'}
+                points={task.points || task.xp_reward || task.reward_points || 0}
+                onSocialPress={() => {
+                  router.push({
+                    pathname: '/submit-task',
+                    params: { taskId: task.id || task.task_id },
+                  } as any);
+                }}
+              />
+            </Pressable>
+          ))
+        )}
       </View>
     </ScrollView>
-    </>
-  );
-}
-
-function LandingPage() {
-  function handleClick(){
-    console.log('Button pressed');
-    router.push('/login');
-  }
-  return (
-    <View style={[styles.container, { backgroundColor: Colors.dark.background }]}>
-      <View style={{
-        width: 'auto', height: 'auto',
-        alignItems: 'center', marginTop: '55%'
-      }}>
-        <Image
-          source={require('@/assets/images/badge3.png')}
-          style={{ width: 180, height: 180, resizeMode: 'contain' }}
-        />
-      </View>
-      <View style={{
-        alignItems: 'center',
-      }}>
-        <Text style={GlobalStyle.textHeading}>One app,</Text>
-        <Text style={GlobalStyle.textHeading}> all your Groving</Text>
-        <View style={{
-          marginTop: 16,
-        }}>
-          <Text style={GlobalStyle.textRegular}>What's your role? You can add another account at any time</Text>
-     
-        </View>
-        <View
-  style={{
-    marginTop: 16,
-    flexDirection: 'row',
-    gap: 12, // spacing between buttons (RN >= 0.71 / Expo OK)
-    width: '100%',
-  }}
->
-  <View style={{ flex: 1 }}>
-    <AppButton
-      title="Ambassador"
-      variant="outline"
-      onPress={() => console.log('login')}
-    />
-  </View>
-
-  <View style={{ flex: 1 }}>
-    <AppButton
-      title="State Lead"
-      variant="outline"
-      onPress={() => console.log('signup')}
-    />
-  </View>
-</View>
-
-<View style={{
-          marginTop: 16,
-          flexDirection: 'row',
-        }}>
-          <Text style={GlobalStyle.textRegular}>Already have an account?</Text>
-          <Pressable onPress={handleClick}>
-            <Text style={[GlobalStyle.textRegular, { color: "white" ,marginLeft: 4, fontWeight:'400' }]}>Log in</Text>
-          </Pressable>
-     
-        </View>
-         </View>
-    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'space-between',
+  loadingContainer: {
     alignItems: 'center',
-    paddingVertical: 60,
-    paddingHorizontal: 20,
+    justifyContent: 'center',
+    paddingVertical: 40,
   },
-  titleContainer: {
-    flexDirection: 'row',
+  loadingText: {
+    color: '#C7C7C7',
+    fontSize: 14,
+    marginTop: 12,
+  },
+  emptyContainer: {
     alignItems: 'center',
-    gap: 8,
+    justifyContent: 'center',
+    paddingVertical: 40,
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+  emptyText: {
+    color: '#808080',
+    fontSize: 14,
   },
 });

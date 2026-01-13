@@ -7,25 +7,29 @@ export const tasksApi = {
   // Get all tasks
   getTasks: async (params?: QueryParams) => {
     const res = await api.get('/tasks', { params });
-    return res.data;
+    // API returns { data: [...] } or just [...]
+    return res.data.data || res.data;
   },
 
   // Get task by ID
   getTaskById: async (id: number) => {
     const res = await api.get(`/tasks/${id}`);
-    return res.data;
+    // API returns { data: {...} } or just {...}
+    return res.data.data || res.data;
   },
 
   // Get assigned tasks
   getAssignedTasks: async () => {
     const res = await api.get('/tasks/assigned');
-    return res.data;
+    // API returns { data: [...] } or just [...]
+    return res.data.data || res.data;
   },
 
   // Get available tasks
   getAvailableTasks: async () => {
     const res = await api.get('/tasks/available');
-    return res.data;
+    // API returns { data: [...] } or just [...]
+    return res.data.data || res.data;
   },
 };
 

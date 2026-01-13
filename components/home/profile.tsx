@@ -1,8 +1,18 @@
+import { useAuthStore } from '@/store/authStore';
+import { getUserFirstName, getUserInitial } from '@/utils/userHelpers';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { StyleSheet, Text, View } from 'react-native';
 
 export default function WelcomeCard() {
+  const user = useAuthStore((state) => state.user);
+  const userInitial = getUserInitial();
+  const firstName = getUserFirstName();
+  console.log(user);
+  console.log(userInitial);
+  console.log(firstName);
+  const userXP = user?.xp || 0;
+  
   return (
     <LinearGradient
       colors={['#1C519D', '#33167F', '#1D1D1D']}
@@ -15,9 +25,9 @@ export default function WelcomeCard() {
       <View style={styles.topRow}>
         <View style={styles.profileRow}>
           <View style={styles.avatar}>
-            <Text style={styles.avatarText}>M</Text>
+            <Text style={styles.avatarText}>{userInitial}</Text>
           </View>
-          <Text style={styles.helloText}>Hello, Manoj</Text>
+          <Text style={styles.helloText}>Hello, {firstName}</Text>
         </View>
 
         <Ionicons name="notifications-outline" size={22} color="#fff" />
@@ -27,7 +37,7 @@ export default function WelcomeCard() {
       <View style={styles.bottomRow}>
         <View>
           <Text style={styles.label}>Total Points</Text>
-          <Text style={styles.points}>200</Text>
+          <Text style={styles.points}>{userXP.toLocaleString()}</Text>
 
           <View style={styles.metaRow}>
             <Ionicons name="trending-up" size={14} color="#C7C7C7" />

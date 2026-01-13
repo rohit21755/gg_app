@@ -6,31 +6,36 @@ export const campaignsApi = {
   // Get all campaigns
   getCampaigns: async () => {
     const res = await api.get('/campaigns');
-    return res.data;
+    // API returns { data: [...] } or just [...]
+    return res.data.data || res.data;
   },
 
   // Get campaign by ID
   getCampaignById: async (id: number) => {
     const res = await api.get(`/campaigns/${id}`);
-    return res.data;
+    // API returns { data: {...} } or just {...}
+    return res.data.data || res.data;
   },
 
   // Join campaign
   joinCampaign: async (id: number) => {
     const res = await api.post(`/campaigns/${id}/join`);
-    return res.data;
+    // API returns { data: {...} } or just {...}
+    return res.data.data || res.data;
   },
 
   // Get campaign tasks
   getCampaignTasks: async (id: number) => {
     const res = await api.get(`/campaigns/${id}/tasks`);
-    return res.data;
+    // API returns { data: [...] } or just [...]
+    return res.data.data || res.data;
   },
 
   // Get campaign leaderboard
   getCampaignLeaderboard: async (id: number) => {
     const res = await api.get(`/campaigns/${id}/leaderboard`);
-    return res.data;
+    // API returns { data: [...] } or just [...]
+    return res.data.data || res.data;
   },
 };
 

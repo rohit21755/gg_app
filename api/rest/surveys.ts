@@ -7,25 +7,29 @@ export const surveysApi = {
   // Get available surveys
   getAvailableSurveys: async () => {
     const res = await api.get('/surveys/available');
-    return res.data;
+    // API returns { data: [...] } or just [...]
+    return res.data.data || res.data;
   },
 
   // Get survey by ID
   getSurveyById: async (id: number) => {
     const res = await api.get(`/surveys/${id}`);
-    return res.data;
+    // API returns { data: {...} } or just {...}
+    return res.data.data || res.data;
   },
 
   // Submit survey
   submitSurvey: async (id: number, data: SubmitSurveyRequest) => {
     const res = await api.post(`/surveys/${id}/submit`, data);
-    return res.data;
+    // API returns { data: {...} } or just {...}
+    return res.data.data || res.data;
   },
 
   // Get user survey responses
   getSurveyResponses: async () => {
     const res = await api.get('/surveys/responses');
-    return res.data;
+    // API returns { data: [...] } or just [...]
+    return res.data.data || res.data;
   },
 };
 

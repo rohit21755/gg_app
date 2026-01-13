@@ -7,25 +7,29 @@ export const referralsApi = {
   // Get user referrals
   getReferrals: async () => {
     const res = await api.get('/referrals');
-    return res.data;
+    // API returns { data: {...} } or just {...}
+    return res.data.data || res.data;
   },
 
   // Get user referral code
   getReferralCode: async () => {
     const res = await api.get('/referrals/code');
-    return res.data;
+    // API returns { data: {...} } or just {...}
+    return res.data.data || res.data;
   },
 
   // Get referral invites
   getReferralInvites: async () => {
     const res = await api.get('/referrals/invites');
-    return res.data;
+    // API returns { data: [...] } or just [...]
+    return res.data.data || res.data;
   },
 
   // Send referral invite
   sendReferralInvite: async (data: SendReferralInviteRequest) => {
     const res = await api.post('/referrals/invite', data);
-    return res.data;
+    // API returns { data: {...} } or just {...}
+    return res.data.data || res.data;
   },
 };
 

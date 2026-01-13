@@ -7,13 +7,15 @@ export const activitiesApi = {
   // Get user activities
   getUserActivities: async (params?: QueryParams) => {
     const res = await api.get('/activities', { params });
-    return res.data;
+    // API returns { data: [...] } or just [...]
+    return res.data.data || res.data;
   },
 
   // Get global activity feed
   getGlobalActivities: async (params?: QueryParams) => {
     const res = await api.get('/activities/global', { params });
-    return res.data;
+    // API returns { data: [...] } or just [...]
+    return res.data.data || res.data;
   },
 };
 

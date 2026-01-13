@@ -6,13 +6,15 @@ export const dashboardApi = {
   // Get user dashboard
   getDashboard: async () => {
     const res = await api.get('/dashboard');
-    return res.data;
+    // API returns { data: {...} } or just {...}
+    return res.data.data || res.data;
   },
 
   // Get quick stats
   getQuickStats: async () => {
     const res = await api.get('/dashboard/quick-stats');
-    return res.data;
+    // API returns { data: {...} } or just {...}
+    return res.data.data || res.data;
   },
 };
 

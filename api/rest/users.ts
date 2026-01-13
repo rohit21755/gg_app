@@ -11,19 +11,22 @@ export const usersApi = {
   // Get current user profile
   getCurrentUser: async () => {
     const res = await api.get('/users/me');
-    return res.data;
+    // API returns { data: {...} } or just {...}
+    return res.data.data || res.data;
   },
 
   // Update user profile
   updateProfile: async (data: UpdateProfileRequest) => {
     const res = await api.put('/users/me', data);
-    return res.data;
+    // API returns { data: {...} } or just {...}
+    return res.data.data || res.data;
   },
 
   // Update user avatar
   updateAvatar: async (data: UpdateAvatarRequest) => {
     const res = await api.patch('/users/me/avatar', data);
-    return res.data;
+    // API returns { data: {...} } or just {...}
+    return res.data.data || res.data;
   },
 
   // Upload user resume
@@ -33,13 +36,15 @@ export const usersApi = {
         'Content-Type': 'multipart/form-data',
       },
     });
-    return res.data;
+    // API returns { data: {...} } or just {...}
+    return res.data.data || res.data;
   },
 
   // Get user certificates
   getCertificates: async () => {
     const res = await api.get('/users/me/certificates');
-    return res.data;
+    // API returns { data: [...] } or just [...]
+    return res.data.data || res.data;
   },
 
   // Download certificate
@@ -53,25 +58,29 @@ export const usersApi = {
   // Get user dashboard stats
   getDashboardStats: async () => {
     const res = await api.get('/users/me/stats');
-    return res.data;
+    // API returns { data: {...} } or just {...}
+    return res.data.data || res.data;
   },
 
   // Get user activity feed
   getActivity: async (params?: QueryParams) => {
     const res = await api.get('/users/me/activity', { params });
-    return res.data;
+    // API returns { data: [...] } or just [...]
+    return res.data.data || res.data;
   },
 
   // Search users
   searchUsers: async (params: QueryParams) => {
     const res = await api.get('/users/search', { params });
-    return res.data;
+    // API returns { data: [...] } or just [...]
+    return res.data.data || res.data;
   },
 
   // Get user statistics
   getUserStats: async (id: number) => {
     const res = await api.get(`/users/${id}/stats`);
-    return res.data;
+    // API returns { data: {...} } or just {...}
+    return res.data.data || res.data;
   },
 };
 

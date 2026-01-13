@@ -1,5 +1,5 @@
-import { useQuery } from '@tanstack/react-query';
-import type { QueryParams } from '../types';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import type { CreateOrGetCollegeRequest, QueryParams } from '../types';
 import { api } from './axiosClient';
 
 // Public API Functions
@@ -7,43 +7,60 @@ export const publicApi = {
   // Get all colleges
   getColleges: async () => {
     const res = await api.get('/colleges');
-    return res.data;
+    // API returns { colleges: [...] } or { data: { colleges: [...] } }
+    const response = res.data.data || res.data;
+    // Handle both { colleges: [...] } and direct array
+    return response.colleges || response;
+  },
+
+  // Create or get college (Public - No Auth Required)
+  createOrGetCollege: async (data: CreateOrGetCollegeRequest) => {
+    const res = await api.post('/colleges', data);
+    // API returns { college: {...}, message: "..." } or { data: { college: {...}, message: "..." } }
+    const response = res.data.data || res.data;
+    return response;
   },
 
   // Get college by ID
   getCollegeById: async (id: number) => {
     const res = await api.get(`/colleges/${id}`);
-    return res.data;
+    // API returns { data: {...} } or just {...}
+    return res.data.data || res.data;
   },
 
   // Get college leaderboard
   getCollegeLeaderboard: async (id: number, params?: QueryParams) => {
     const res = await api.get(`/colleges/${id}/leaderboard`, { params });
-    return res.data;
+    // API returns { data: [...] } or just [...]
+    return res.data.data || res.data;
   },
 
   // Get all states
   getStates: async () => {
     const res = await api.get('/states');
-    return res.data;
+    // API returns { data: [...] } or just [...]
+    return res.data.data || res.data;
   },
 
   // Get state by ID
   getStateById: async (id: number) => {
     const res = await api.get(`/states/${id}`);
-    return res.data;
+    // API returns { data: {...} } or just {...}
+    return res.data.data || res.data;
   },
 
   // Get state leaderboard
   getStateLeaderboard: async (id: number, params?: QueryParams) => {
     const res = await api.get(`/states/${id}/leaderboard`, { params });
-    return res.data;
+    // API returns { data: [...] } or just [...]
+    return res.data.data || res.data;
   },
 
   // Get global leaderboard
   getGlobalLeaderboard: async (params?: QueryParams) => {
     const res = await api.get('/leaderboards/global', { params });
-    return res.data;
+    // API returns { data: [...] } or just [...]
+    return res.data.data || res.data;
   },
 };
 
@@ -98,6 +115,17 @@ export const useGlobalLeaderboard = (params?: QueryParams) => {
   return useQuery({
     queryKey: ['global-leaderboard', params],
     queryFn: () => publicApi.getGlobalLeaderboard(params),
+  });
+};
+
+// Create or get college hook
+export const useCreateOrGetCollege = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: publicApi.createOrGetCollege,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['colleges'] });
+    },
   });
 };
 

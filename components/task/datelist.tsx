@@ -1,18 +1,44 @@
 import { LinearGradient } from 'expo-linear-gradient';
-import { StyleSheet, Text, View } from 'react-native';
+import { useRef, useEffect } from 'react';
+import { StyleSheet, Text, View, ScrollView, Dimensions } from 'react-native';
 
 export default function DateStrip() {
   const today = new Date();
+  const scrollViewRef = useRef<ScrollView>(null);
+  const screenWidth = Dimensions.get('window').width;
 
-  // Create 7 dates with today in the center
-  const dates = Array.from({ length: 7 }, (_, index) => {
+  // Create more dates for horizontal scrolling (30 days before and after today)
+  const dates = Array.from({ length: 61 }, (_, index) => {
     const d = new Date(today);
-    d.setDate(today.getDate() - 3 + index);
+    d.setDate(today.getDate() - 30 + index);
     return d;
   });
 
+  // Scroll to today's date on mount
+  useEffect(() => {
+    const todayIndex = 30; // Today is in the middle (index 30)
+    const itemWidth = 40; // width of each date item
+    const gap = 16; // gap between items
+    const padding = 16; // horizontal padding
+    // Calculate scroll position to center today's date
+    const scrollToX = padding + (todayIndex * (itemWidth + gap)) - (screenWidth / 2) + (itemWidth / 2);
+    
+    setTimeout(() => {
+      scrollViewRef.current?.scrollTo({
+        x: Math.max(0, scrollToX),
+        animated: false,
+      });
+    }, 100);
+  }, [screenWidth]);
+
   return (
-    <View style={styles.container}>
+    <ScrollView
+      ref={scrollViewRef}
+      horizontal
+      showsHorizontalScrollIndicator={false}
+      contentContainerStyle={styles.container}
+      style={styles.scrollView}
+    >
       {dates.map((date, index) => {
         const isToday =
           date.toDateString() === today.toDateString();
@@ -44,15 +70,18 @@ export default function DateStrip() {
           </View>
         );
       })}
-    </View>
+    </ScrollView>
   );
 }
 const styles = StyleSheet.create({
+  scrollView: {
+    width: '100%',
+  },
   container: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingHorizontal: 8,
-    width: '100%',
+    paddingHorizontal: 16,
+    alignItems: 'center',
+    gap: 16,
   },
 
   item: {

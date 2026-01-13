@@ -7,79 +7,94 @@ export const gamificationApi = {
   // Get XP transactions
   getXPTransactions: async () => {
     const res = await api.get('/xp/transactions');
-    return res.data;
+    // API returns { data: [...] } or just [...]
+    return res.data.data || res.data;
   },
 
   // Award XP (internal)
   awardXP: async (data: AwardXPRequest) => {
     const res = await api.post('/xp/award', data);
-    return res.data;
+    // API returns { data: {...} } or just {...}
+    return res.data.data || res.data;
   },
 
   // Get all levels
   getLevels: async () => {
     const res = await api.get('/levels');
-    return res.data;
+    // API returns { data: [...] } or just [...]
+    return res.data.data || res.data;
   },
 
   // Get current user level
   getCurrentLevel: async () => {
     const res = await api.get('/levels/current');
-    return res.data;
+    // API returns { data: {...} } or just {...}
+    return res.data.data || res.data;
   },
 
   // Get next level info
   getNextLevel: async (id: number) => {
     const res = await api.get(`/levels/${id}/next`);
-    return res.data;
+    // API returns { data: {...} } or just {...}
+    return res.data.data || res.data;
   },
 
   // Get all badges
   getBadges: async () => {
     const res = await api.get('/badges');
-    return res.data;
+    // API returns { data: [...] } or just [...]
+    return res.data.data || res.data;
   },
 
   // Get badge by ID
   getBadgeById: async (id: number) => {
     const res = await api.get(`/badges/${id}`);
-    return res.data;
+    // API returns { data: {...} } or just {...}
+    return res.data.data || res.data;
   },
 
   // Get user badges
   getUserBadges: async () => {
     const res = await api.get('/badges/me');
-    return res.data;
+    // API returns { data: [...] } or just [...]
+    return res.data.data || res.data;
   },
 
   // Get user streaks
-  getStreaks: async () => {
-    const res = await api.get('/streaks');
-    return res.data;
+  getStreaks: async (type?: 'daily_engagement' | 'daily_login' | 'weekly_task' | 'campaign') => {
+    const res = await api.get('/streaks', {
+      params: type ? { type } : { type: 'daily_engagement' },
+    });
+    // API returns { data: {...} } or just {...}
+    return res.data.data || res.data;
   },
 
   // Log streak activity
   logStreak: async (data: LogStreakRequest) => {
     const res = await api.post('/streaks', data);
-    return res.data;
+    // API returns { data: {...} } or just {...}
+    return res.data.data || res.data;
   },
 
   // Get spin wheel
   getSpinWheel: async () => {
     const res = await api.get('/spin-wheel');
-    return res.data;
+    // API returns { data: {...} } or just {...}
+    return res.data.data || res.data;
   },
 
   // Spin the wheel
   spinWheel: async () => {
     const res = await api.post('/spin-wheel');
-    return res.data;
+    // API returns { data: {...} } or just {...}
+    return res.data.data || res.data;
   },
 
   // Get spin history
   getSpinHistory: async () => {
     const res = await api.get('/spin-wheel/history');
-    return res.data;
+    // API returns { data: [...] } or just [...]
+    return res.data.data || res.data;
   },
 };
 
@@ -146,10 +161,10 @@ export const useUserBadges = () => {
   });
 };
 
-export const useStreaks = () => {
+export const useStreaks = (type?: 'daily_engagement' | 'daily_login' | 'weekly_task' | 'campaign') => {
   return useQuery({
-    queryKey: ['streaks'],
-    queryFn: gamificationApi.getStreaks,
+    queryKey: ['streaks', type || 'daily_engagement'],
+    queryFn: () => gamificationApi.getStreaks(type),
   });
 };
 

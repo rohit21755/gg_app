@@ -6,25 +6,29 @@ export const rewardsApi = {
   // Get all rewards
   getRewards: async () => {
     const res = await api.get('/rewards');
-    return res.data;
+    // API returns { data: [...] } or just [...]
+    return res.data.data || res.data;
   },
 
   // Get reward by ID
   getRewardById: async (id: number) => {
     const res = await api.get(`/rewards/${id}`);
-    return res.data;
+    // API returns { data: {...} } or just {...}
+    return res.data.data || res.data;
   },
 
   // Redeem reward
   redeemReward: async (id: number) => {
     const res = await api.post(`/rewards/${id}/redeem`);
-    return res.data;
+    // API returns { data: {...} } or just {...}
+    return res.data.data || res.data;
   },
 
   // Get user reward redemptions
   getRedemptions: async () => {
     const res = await api.get('/rewards/redemptions');
-    return res.data;
+    // API returns { data: [...] } or just [...]
+    return res.data.data || res.data;
   },
 };
 

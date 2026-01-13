@@ -7,19 +7,22 @@ export const emailApi = {
   // Get email preferences
   getEmailPreferences: async () => {
     const res = await api.get('/email/preferences');
-    return res.data;
+    // API returns { data: {...} } or just {...}
+    return res.data.data || res.data;
   },
 
   // Update email preferences
   updateEmailPreferences: async (data: UpdateEmailPreferencesRequest) => {
     const res = await api.put('/email/preferences', data);
-    return res.data;
+    // API returns { data: {...} } or just {...}
+    return res.data.data || res.data;
   },
 
   // Resend verification email
   resendVerificationEmail: async () => {
     const res = await api.post('/email/verify/resend');
-    return res.data;
+    // API returns { data: {...} } or just {...}
+    return res.data.data || res.data;
   },
 };
 

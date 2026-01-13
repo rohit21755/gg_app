@@ -3,6 +3,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import SegmentedSwitch from './segment-switch';
 // import { useNavigation } from 'expo-router';
+import { getUserInitial } from '@/utils/userHelpers';
 import { router } from 'expo-router';
 type HeaderType = 'title' | 'segment' | 'month';
 
@@ -70,7 +71,7 @@ export default function AppHeader({
         end={{ x: 1, y: 0 }}
         style={styles.avatar}
       >
-        <Text style={styles.avatarText}>M</Text>
+        <Text style={styles.avatarText}>{getUserInitial()}</Text>
       </LinearGradient>
       </Pressable>
     </View>

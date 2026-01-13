@@ -11,43 +11,50 @@ export const submissionsApi = {
   // Get user submissions
   getSubmissions: async () => {
     const res = await api.get('/submissions');
-    return res.data;
+    // API returns { data: [...] } or just [...]
+    return res.data.data || res.data;
   },
 
   // Create submission
   createSubmission: async (data: CreateSubmissionRequest) => {
     const res = await api.post('/submissions', data);
-    return res.data;
+    // API returns { data: {...} } or just {...}
+    return res.data.data || res.data;
   },
 
   // Get submission by ID
   getSubmissionById: async (id: number) => {
     const res = await api.get(`/submissions/${id}`);
-    return res.data;
+    // API returns { data: {...} } or just {...}
+    return res.data.data || res.data;
   },
 
   // Update submission
   updateSubmission: async (id: number, data: UpdateSubmissionRequest) => {
     const res = await api.put(`/submissions/${id}`, data);
-    return res.data;
+    // API returns { data: {...} } or just {...}
+    return res.data.data || res.data;
   },
 
   // Delete submission
   deleteSubmission: async (id: number) => {
     const res = await api.delete(`/submissions/${id}`);
-    return res.data;
+    // API returns { data: {...} } or just {...}
+    return res.data.data || res.data;
   },
 
   // Get submission proof
   getSubmissionProof: async (id: number) => {
     const res = await api.get(`/submissions/${id}/proof`);
-    return res.data;
+    // API returns { data: {...} } or just {...}
+    return res.data.data || res.data;
   },
 
   // Appeal rejected submission
   appealSubmission: async (id: number, data: AppealSubmissionRequest) => {
     const res = await api.post(`/submissions/${id}/appeal`, data);
-    return res.data;
+    // API returns { data: {...} } or just {...}
+    return res.data.data || res.data;
   },
 };
 

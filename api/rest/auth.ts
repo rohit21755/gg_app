@@ -19,13 +19,15 @@ export const authApi = {
   // Login
   login: async (data: LoginRequest) => {
     const res = await api.post('/auth/login', data);
-    return res.data;
+    // API returns { data: { access_token, refresh_token, user } }
+    return res.data.data || res.data;
   },
 
   // Register
   register: async (data: RegisterRequest) => {
     const res = await api.post('/auth/register', data);
-    return res.data;
+    // API returns { data: { access_token, refresh_token, user } }
+    return res.data.data || res.data;
   },
 
   // Refresh Token
@@ -117,4 +119,17 @@ export const useVerifyEmail = (token: string) => {
     queryFn: () => authApi.verifyEmail(token),
     enabled: !!token,
   });
+};
+
+// Wrapper functions for useAuth hook
+export const loginRequest = async (email: string, password: string) => {
+  return authApi.login({ email, password });
+};
+
+export const registerRequest = async (data: RegisterRequest) => {
+  return authApi.register(data);
+};
+
+export const logoutRequest = async () => {
+  return authApi.logout();
 };

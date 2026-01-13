@@ -1,16 +1,20 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import Svg, { Circle } from 'react-native-svg';
 
 interface UpcomingBadgeProps {
   title: string;
   subtitle: string;
   progress: number; // 0–100
+  onPress?: () => void;
+  badgeImage?: any; // Optional badge image
 }
 
 export default function UpcomingBadge({
   title,
   subtitle,
   progress,
+  onPress,
+  badgeImage,
 }: UpcomingBadgeProps) {
   const size = 42;
   const strokeWidth = 4;
@@ -19,11 +23,18 @@ export default function UpcomingBadge({
   const strokeDashoffset =
     circumference - (progress / 100) * circumference;
 
+  const Container = onPress ? Pressable : View;
+  const containerProps = onPress ? { onPress } : {};
+
   return (
-    <View style={styles.container}>
+    <Container style={styles.container} {...containerProps}>
       {/* Left icon */}
       <View style={styles.icon}>
-        <Text style={styles.iconText}>?</Text>
+        {badgeImage ? (
+          <Image source={badgeImage} style={styles.iconImage} resizeMode="contain" />
+        ) : (
+          <Text style={styles.iconText}>?</Text>
+        )}
       </View>
 
       {/* Text */}
@@ -57,7 +68,7 @@ export default function UpcomingBadge({
         </Svg>
         <Text style={styles.progressText}>{progress}</Text>
       </View>
-    </View>
+    </Container>
   );
 }
 
@@ -84,6 +95,11 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 18,
     fontWeight: '700',
+  },
+  iconImage: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 18,
   },
 
   textWrap: {

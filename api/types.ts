@@ -115,3 +115,9 @@ export interface QueryParams {
   [key: string]: any;
 }
 
+export interface CreateOrGetCollegeRequest {
+  name: string;
+  code?: string;
+  state_id?: number;
+}
+

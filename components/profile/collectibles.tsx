@@ -1,12 +1,28 @@
-import { Text, View } from "react-native";
+import { View, StyleSheet } from "react-native";
+import BadgeItem from "@/components/rewards/badge-item";
+
 export default function Collectibles() {
-    return (<>
-    <View style={{
-        justifyContent:'center',
-        alignItems:'center',
-        // marginTop:50,
-    }}><Text style={{
-        color: '#FFFFFF',
-    }}>Comming Soon</Text></View>
-    </>)
+    return (
+        <View style={styles.container}>
+            <View style={styles.badgesContainer}>
+                <BadgeItem image={require('@/assets/images/badge1.png')} />
+                <BadgeItem image={require('@/assets/images/badge2.png')} />
+            </View>
+        </View>
+    );
 }
+
+const styles = StyleSheet.create({
+    container: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingVertical: 20,
+    },
+    badgesContainer: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        gap: 12,
+        paddingHorizontal: 16,
+    },
+});

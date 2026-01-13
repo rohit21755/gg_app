@@ -42,7 +42,7 @@ export default function Landing() {
     <AppButton
       title="Ambassador"
       variant="outline"
-      onPress={() => console.log('login')}
+      onPress={() => router.push('/register')}
     />
   </View>
 
