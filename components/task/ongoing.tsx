@@ -32,18 +32,18 @@ export default function OngoingTask({ tasks = [], isLoading = false }: OngoingTa
             }}>
                 <DateStrip />
             </View>
-
-            {tasks.map((task: any, index: number) => (
+            
+            {tasks.slice(0, 3).map((task: any, index: number) => (
                 <View 
-                    key={task.id || task.task_id || index}
+                    key={task.ID || task.id || task.task_id || index}
                     style={{
                         marginTop: index === 0 ? 16 : 16,
                     }}
                 >
                     <TaskCard
-                        title={task.title || task.name || 'Untitled Task'}
-                        description={task.description || task.instructions || 'No description available'}
-                        points={task.points || task.xp_reward || task.reward_points || 0}
+                        title={task.Title || task.title || task.name || 'Untitled Task'}
+                        description={task.Description || task.description || task.instructions || 'No description available'}
+                        points={task.XPReward || task.points || task.xp_reward || task.reward_points || 0}
                         onSocialPress={() => {
                             console.log('Task pressed:', task.id);
                         }}

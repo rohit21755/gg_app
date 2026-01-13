@@ -11,7 +11,7 @@ export default function HomeScreen() {
   const [filter, setFilter] = useState<'Ongoing' | 'Completed'>('Ongoing');
   const { data, isLoading, error, refetch } = useAvailableTasks();
   const { showError } = useToast();
-
+  console.log(data);
   // Handle errors
   useEffect(() => {
     if (error) {
@@ -86,22 +86,22 @@ export default function HomeScreen() {
         ) : (
           filteredTasks.map((task: any) => (
             <Pressable
-              key={task.id || task.task_id}
+              key={task.ID || task.id || task.task_id}
               onPress={() => {
                 router.push({
                   pathname: '/submit-task',
-                  params: { taskId: task.id || task.task_id },
+                  params: { taskId: task.ID || task.id || task.task_id },
                 } as any);
               }}
             >
               <TaskCard
-                title={task.title || task.name || 'Untitled Task'}
-                description={task.description || task.instructions || 'No description available'}
-                points={task.points || task.xp_reward || task.reward_points || 0}
+                title={task.Title || task.title || task.name || 'Untitled Task'}
+                description={task.Description || task.description || task.instructions || 'No description available'}
+                points={task.XPReward || task.points || task.xp_reward || task.reward_points || 0}
                 onSocialPress={() => {
                   router.push({
                     pathname: '/submit-task',
-                    params: { taskId: task.id || task.task_id },
+                    params: { taskId: task.ID || task.id || task.task_id },
                   } as any);
                 }}
               />

@@ -27,15 +27,15 @@ export default function CompletedTask({ tasks = [], isLoading = false }: Complet
     return(
         <>
             {tasks.map((task: any, index: number) => (
-                <View key={task.id || task.task_id || index} style={{ marginBottom: 16 }}>
+                <View key={task.ID || task.id || task.task_id || index} style={{ marginBottom: 16 }}>
                     <SubmissionCard
-                        title={task.title || task.name || 'Untitled Task'}
-                        description={task.description || task.instructions || 'No description available'}
+                        title={task.Title || task.title || task.name || 'Untitled Task'}
+                        description={task.Description || task.description || task.instructions || 'No description available'}
                         image={task.image_url 
                             ? { uri: task.image_url } 
                             : require('@/assets/images/vibe.png')}
                         responses={task.responses || task.response_count || 0}
-                        points={task.points || task.xp_reward || task.reward_points || 0}
+                        points={task.XPReward || task.points || task.xp_reward || task.reward_points || 0}
                     />
                 </View>
             ))}
